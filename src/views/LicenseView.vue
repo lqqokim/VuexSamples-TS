@@ -47,22 +47,30 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { State, Getter, Mutation, Action } from 'vuex-class';
+import { State, Getter, Mutation, Action, namespace } from 'vuex-class';
 import { License } from '../types';
+
+const LicenseModule = namespace('licenses');
+
+/**
+ * LicenseMutation대신 UserMutation으로 선언하면
+ * users의 deleteLicense가 호출된다.
+ */
+const UserModule = namespace('users');
 
 @Component
 export default class LicenseView extends Vue {
     // @State licenses!: License[];
-    @Getter licenses!: License
-    @Getter totalCount!: number;
+    @LicenseModule.Getter licenses!: License[];
+    @LicenseModule.Getter totalCount!: number;
 
     /**
      * Mutation
      * : Store의 State의 변경을 Store내부의 메소드를 통해서만
      * 변경하도록 Mutation을 사용한다.
      */
-    @Mutation deleteLicense!: (id: number) => void;
-    @Action deleteLicenseAsync!: (id: number) => void;
+    @UserModule.Mutation deleteLicense!: (id: number) => void;
+    @LicenseModule.Action deleteLicenseAsync!: (id: number) => void;
 
     async test(id: number) {
         await this.$store.dispatch('deleteLicenseAsync', id);
@@ -70,4 +78,5 @@ export default class LicenseView extends Vue {
     }
 }
 </script>
+
 

@@ -94,4 +94,5 @@ export const licenses = {
     getters,
     mutations,
     actions,
+    namespaced: true // namespace 처리
 }

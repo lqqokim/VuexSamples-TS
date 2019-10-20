@@ -19,7 +19,7 @@ const mutations: MutationTree<UserState> = {
      * @param payload 
      */
     deleteLicense(state , payload: number) {
-        console.log('users')
+        console.log('users deleteLicense')
     }
 };
 
@@ -32,4 +32,5 @@ export const users = {
     getters,
     mutations,
     actions,
+    namespaced: true
 };
