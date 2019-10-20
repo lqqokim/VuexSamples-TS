@@ -45,6 +45,9 @@ const getters: GetterTree<LicenseState, RootState> = {
 };
 
 const mutations: MutationTree<LicenseState> = {
+    addLicense(state, payload: License) {
+        state.licenses.push(payload);
+    },
     /**
      * 1.MotationTree에 Generic으로 State 타입처기 되기 때문에
      * state 타입을 지정하지 않아도 된다.

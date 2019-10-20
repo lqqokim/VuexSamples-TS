@@ -42,6 +42,33 @@
                 </tr>
             </tbody>
         </table>
+        <div class="add-license">
+            <div class="input-group mb-3">
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Email"
+                    aria-label="Email"
+                    aria-describedby="basic-addon1"
+                    v-model="email"
+                >
+            </div>
+            <div class="input-group mb-3">
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="LicenseKey"
+                    aria-label="LicenseKey"
+                    aria-describedby="basic-addon1"
+                    v-model="licenseKey"
+                >
+            </div>
+            <button
+                type="button"
+                class="btn btn-success"
+                @click="addLicense({ id: totalCount + 1, email, licenseKey})"
+            >Add</button>
+        </div>
     </div>
 </template>
 
@@ -69,14 +96,27 @@ export default class LicenseView extends Vue {
      * : Store의 State의 변경을 Store내부의 메소드를 통해서만
      * 변경하도록 Mutation을 사용한다.
      */
-    @UserModule.Mutation deleteLicense!: (id: number) => void;
+    @LicenseModule.Mutation deleteLicense!: (id: number) => void;
     @LicenseModule.Action deleteLicenseAsync!: (id: number) => void;
+    @LicenseModule.Mutation addLicense!: (license: License) => void;
+
+    email: string = '';
+    licenseKey: string = '';
 
     async test(id: number) {
-        await this.$store.dispatch('deleteLicenseAsync', id);
+        /**
+         * namespace를 추가해줬기 때문에 path에 license 추가
+         */
+        await this.$store.dispatch('licenses/deleteLicenseAsync', id);
         console.log('delete success!');
     }
 }
 </script>
+<style scoped>
+.add-license {
+    margin-left: 500px;
+    margin-right: 500px;
+}
+</style>
 
 
