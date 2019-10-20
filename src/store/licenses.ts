@@ -1,11 +1,7 @@
-import { License } from '@/types'
+import { License, LicenseState, RootState } from '@/types'
 import { MutationTree, GetterTree, ActionTree } from 'vuex';
 
-interface State {
-    licenses: License[];
-}
-
-const state: State = {
+const state: LicenseState = {
     licenses: [
         {
             id: 1,
@@ -30,7 +26,14 @@ const state: State = {
     ]
 };
 
-const getters: GetterTree<State, any> = {
+/**
+ * S: State의 타입
+ * R: RootState의 타입 
+ */
+const getters: GetterTree<LicenseState, RootState> = {
+    licenses(state) {
+        return state.licenses;
+    },
     /**
      * GetterTree에 Generic으로 State 타입처리 되기 때문에 
      * state 타입을 지정하지 않아도 된다.
@@ -41,7 +44,7 @@ const getters: GetterTree<State, any> = {
     }
 };
 
-const mutations: MutationTree<State> = {
+const mutations: MutationTree<LicenseState> = {
     /**
      * 1.MotationTree에 Generic으로 State 타입처기 되기 때문에
      * state 타입을 지정하지 않아도 된다.
@@ -49,7 +52,7 @@ const mutations: MutationTree<State> = {
      * @param state 
      * @param payload 
      */
-    deleteLicense(state: State, payload: number) {
+    deleteLicense(state: LicenseState, payload: number) {
         const licenses: License[] = [];
         for (let i = 0; i < state.licenses.length; i++) {
             if (state.licenses[i].id !== payload) {
@@ -60,8 +63,23 @@ const mutations: MutationTree<State> = {
     }
 };
 
-const actions: ActionTree<State, any> = {
-    async deleteLicenseAsync(context, payload: number) {
+/*
+ export default new Vuex.Store({
+     state: { // RootState
+        checked: false
+     },
+     modules: {
+         licenses,
+         users
+     }
+ })
+
+ - 각각의 State에서 RootState의 값을 사용하여 처리를 할경우도 있기 때문에
+ R: RoosState를 생성하여 타입에 추가해준다. 
+ - any -> RootState로 변경하였음
+ */
+const actions: ActionTree<LicenseState, RootState> = {
+    async deleteLicenseAsync(this, context, payload: number) {
         return new Promise((resolve) => {
             setTimeout(() => {
                 context.commit('deleteLicense', payload);
@@ -75,5 +93,5 @@ export const licenses = {
     state,
     getters,
     mutations,
-    actions
+    actions,
 }

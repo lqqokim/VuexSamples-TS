@@ -52,7 +52,8 @@ import { License } from '../types';
 
 @Component
 export default class LicenseView extends Vue {
-    @State licenses!: License[];
+    // @State licenses!: License[];
+    @Getter licenses!: License
     @Getter totalCount!: number;
 
     /**
