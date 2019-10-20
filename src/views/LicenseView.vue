@@ -8,7 +8,9 @@
                     <th scope="col">id</th>
                     <th scope="col">email</th>
                     <th scope="col">license key</th>
-                    <th scope="col">delete</th>
+                    <th scope="col">delete [Mutation]</th>
+                    <th scope="col">delete [Async Action]</th>
+                    <th scope="col">delete [dispatch]</th>
                 </tr>
             </thead>
             <tbody v-for="license in licenses" :key="license.id">
@@ -22,7 +24,21 @@
                             class="btn btn-danger"
                             @click="deleteLicense(license.id)"
                         >delete</button>
-                    </td>ÍÍ
+                    </td>
+                    <td>
+                        <button
+                            type="button"
+                            class="btn btn-danger"
+                            @click="deleteLicenseAsync(license.id)"
+                        >delete</button>
+                    </td>
+                    <td>
+                        <button
+                            type="button"
+                            class="btn btn-danger"
+                            @click="test(license.id)"
+                        >delete</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -31,7 +47,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { State, Getter, Mutation } from 'vuex-class';
+import { State, Getter, Mutation, Action } from 'vuex-class';
 import { License } from '../types';
 
 @Component
@@ -45,6 +61,12 @@ export default class LicenseView extends Vue {
      * 변경하도록 Mutation을 사용한다.
      */
     @Mutation deleteLicense!: (id: number) => void;
+    @Action deleteLicenseAsync!: (id: number) => void;
+
+    async test(id: number) {
+        await this.$store.dispatch('deleteLicenseAsync', id);
+        console.log('delete success!');
+    }
 }
 </script>
 

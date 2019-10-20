@@ -1,6 +1,6 @@
 import { License } from '@/types'
-import { MutationTree, GetterTree } from 'vuex';
- 
+import { MutationTree, GetterTree, ActionTree } from 'vuex';
+
 interface State {
     licenses: License[];
 }
@@ -16,6 +16,16 @@ const state: State = {
             id: 2,
             email: 'aaa4204@naver.com',
             licenseKey: 'dsandjiqhdu128e91y123u91'
+        },
+        {
+            id: 3,
+            email: 'bbbb@naver.com',
+            licenseKey: 'd122sandji123qhdu128e91y123u91'
+        },
+        {
+            id: 4,
+            email: 'ccc4204@naver.com',
+            licenseKey: 'bvsdsandjiqhdu128e91y123u91'
         }
     ]
 };
@@ -26,7 +36,7 @@ const getters: GetterTree<State, any> = {
      * state 타입을 지정하지 않아도 된다.
      * @param state \
      */
-    totalCount(state) { 
+    totalCount(state) {
         return state.licenses.length;
     }
 };
@@ -39,10 +49,10 @@ const mutations: MutationTree<State> = {
      * @param state 
      * @param payload 
      */
-    deleteLicense (state: State, payload: number) {
+    deleteLicense(state: State, payload: number) {
         const licenses: License[] = [];
-        for (let i = 0; i < state.licenses.length; i++ ) {
-            if(state.licenses[i].id !== payload) {
+        for (let i = 0; i < state.licenses.length; i++) {
+            if (state.licenses[i].id !== payload) {
                 licenses.push(state.licenses[i]);
             }
         }
@@ -50,8 +60,20 @@ const mutations: MutationTree<State> = {
     }
 };
 
+const actions: ActionTree<State, any> = {
+    async deleteLicenseAsync(context, payload: number) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                context.commit('deleteLicense', payload);
+                resolve();
+            }, 2000)
+        })
+    }
+};
+
 export const licenses = {
     state,
     getters,
-    mutations
+    mutations,
+    actions
 }
